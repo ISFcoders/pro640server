@@ -1,0 +1,25 @@
+{
+  "mongo": {
+    "url": "ds129926.mlab.com",
+    "port": "29926",
+    "dbname": "users_p6040v1",
+    "username": "user6040",
+    "password": "psuser6040"
+  },
+  "mongo2": {
+    "url": "ds243931.mlab.com",
+    "port": "43931",
+    "dbname": "krasikov_p640",
+    "username": "krasikov",
+    "password": "krauff78"
+  },
+  "token": {
+    "secretkey": "secretKey"
+  },
+  "api": {
+    "register": "http://localhost:3000/api/events",
+    "login": "http://localhost:3000/api/login",
+    "events": "http://localhost:3000/api/events",
+    "special": "http://localhost:3000/api/special"
+  }
+}
