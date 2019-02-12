@@ -1,12 +1,14 @@
 # kop640server
 Cooperative 6/40. Backend side.
 
- Start server:   
-`$ cd server`  
-`$ node server`
+### Start server
+ `$ npm install`  
+ `$ node server`  
 
-Configuration file `configs/server.json` structure:
+### Configs
 
+**Attention!** File `configs/server.json` contains private account info.  
+This configuration file structure:
 ```
 {
   "mongo": {
@@ -20,7 +22,7 @@ Configuration file `configs/server.json` structure:
     "secretkey": "SOME_SECRET_KEY_STRING"
   }
 }
-```
+``` 
 
 MEAN Stack:
 - `MongoDB` &mdash; Storing data
