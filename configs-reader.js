@@ -8,4 +8,9 @@ const readJsonFileSync = function(filepath) {
     return JSON.parse(file);
 };
 
+function getServerConfig() {
+    return readJsonFileSync('configs/server.json');
+}
+
 module.exports.readJsonFileSync = readJsonFileSync;
+module.exports.getServerConfig = getServerConfig;

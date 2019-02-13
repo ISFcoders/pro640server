@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const readJsonFileSync = require('../config').readJsonFileSync;
+const readJsonFileSync = require('../configs-reader').readJsonFileSync;
 const config = readJsonFileSync('configs/server.json');
 
 const Schema = mongoose.Schema;
