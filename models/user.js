@@ -1,11 +1,12 @@
 const mongoose = require('mongoose');
 
-const readJsonFileSync = require('../config').readJsonFileSync;
+const readJsonFileSync = require('../configs-reader').readJsonFileSync;
 const config = readJsonFileSync('configs/server.json');
 
 const Schema = mongoose.Schema;
 const userSchema = new Schema({
-    login: String,
+    username: String,
+    login: String, // login = username
     password: String,
     email: String,
     name: String,
@@ -20,6 +21,7 @@ const userSchema = new Schema({
 });
 
 const initUser = function(user) {
+    user.login = user.username;
     user.name = 'Vasya Pupkin';
     user.phone = '-';
     user.owner = false;
