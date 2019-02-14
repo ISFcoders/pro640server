@@ -1,12 +1,11 @@
 # kop640server
-Cooperative 6/40. Backend side.
+Cooperative 6/40 backend side
 
 ### Start server
  `$ npm install`  
  `$ node server`  
 
 ### Configs
-
 **Attention!** File `configs/server.json` contains private account info.  
 This configuration file structure:
 ```
