@@ -3,14 +3,20 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const api = require('./routes/api');
 const apiAuth = require('./routes/api-auth');
+const apiBlockchain = require('./routes/api-blockchain');
 
 const PORT = 3000;
 const app = express();
+
+const offersToSell = require('./blockchain/offers-to-sell');
+offersToSell.init();
+setInterval(offersToSell.requestAllOffersToSell, 30000);
 
 app.use(cors());
 app.use(bodyParser.json());
 app.use('/api', api);
 app.use('/api/auth', apiAuth);
+app.use('/api/blockchain', apiBlockchain);
 
 app.get('/', (req, res) => {
     res.send('ISF640 backend server');
