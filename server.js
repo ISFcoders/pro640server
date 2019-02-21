@@ -12,6 +12,10 @@ const offersToSell = require('./blockchain/offers-to-sell');
 offersToSell.init();
 setInterval(offersToSell.requestAllOffersToSell, 30000);
 
+const offersToBuy = require('./blockchain/offers-to-buy');
+offersToBuy.init();
+setInterval(offersToBuy.requestAllOffersToBuy, 30000);
+
 app.use(cors());
 app.use(bodyParser.json());
 app.use('/api', api);

@@ -33,7 +33,8 @@
     },
     "output": {
       "base": "./var/blockchain",
-      "offerstosell": "offers-to-sell.json"
+      "offerstosell": "offers-to-sell.json",
+      "offerstobuy": "offers-to-buy.json"
     }
   }
 }
