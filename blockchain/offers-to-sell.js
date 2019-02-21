@@ -73,3 +73,4 @@ function requestAllOffersToSell() {
 
 module.exports.init = init;
 module.exports.requestAllOffersToSell = requestAllOffersToSell;
+module.exports.fileOffersToSell = fileOffersToSell;
