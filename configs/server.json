@@ -21,5 +21,20 @@
     "login": "http://localhost:3000/api/login",
     "events": "http://localhost:3000/api/events",
     "special": "http://localhost:3000/api/special"
+  },
+  "blockchain": {
+    "provider": {
+      "address": "wss://ropsten.infura.io/ws",
+      "type": "websocket"
+    },
+    "contract": {
+      "address": "0xfcbb10fbc7c0a6ef80abc6bd674ae0254fe3972f",
+      "abi": "./blockchain/abi/contractAbi6040.json"
+    },
+    "output": {
+      "base": "./var/blockchain",
+      "offerstosell": "offers-to-sell.json",
+      "offerstobuy": "offers-to-buy.json"
+    }
   }
 }

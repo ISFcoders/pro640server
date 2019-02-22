@@ -3,6 +3,8 @@
 node_modules/
 package-lock\.json
 # configs/server\.json
+/var
+var/
 
 # compiled output
 /dist
