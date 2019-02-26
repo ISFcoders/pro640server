@@ -8,17 +8,10 @@ const app = express();
 
 // Server engine parts
 
-const offersToSell = require('./src/blockchain/offers-to-sell');
-offersToSell.init();
-setInterval(offersToSell.requestAllOffersToSell, 40000);
-
-const offersToBuy = require('./src/blockchain/offers-to-buy');
-offersToBuy.init();
-setInterval(offersToBuy.requestAllOffersToBuy, 43000);
-
-const ethRates = require('./src/ethereum/rates');
-ethRates.init();
-setInterval(ethRates.requestEthereumRates, 125000);
+const server = require('./src/common/server-emitter').server;
+server.register(require('./src/blockchain/offers-to-sell').init(), {delay: 2000, interval: 'medium'});
+server.register(require('./src/blockchain/offers-to-buy').init(), {delay: 5000, interval: 'medium'});
+server.register(require('./src/ethereum/rates').init(), {delay: 3000, interval: 'large'});
 
 
 // Routing

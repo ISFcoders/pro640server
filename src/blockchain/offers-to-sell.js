@@ -16,6 +16,7 @@ function init() {
         updateOffersToSell();
     }
     setTimeout(requestAllOffersToSell, 500);
+    return requestAllOffersToSell;
 }
 
 function updateOffersToSell() {
@@ -23,6 +24,7 @@ function updateOffersToSell() {
 }
 
 function requestAllOffersToSell() {
+    console.log('sell');
     let allOffers = [];
     let uniqueAddresses = new Set();
     getEvents();

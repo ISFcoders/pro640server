@@ -1,4 +1,11 @@
 {
+  "server": {
+    "emitterintervals": {
+      "short": "10000",
+      "medium": "55000",
+      "large": "125000"
+    }
+  },
   "mongo": {
     "url": "ds129926.mlab.com",
     "port": "29926",

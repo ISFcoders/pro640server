@@ -16,6 +16,7 @@ function init() {
         updateEthereumRates({});
     }
     setTimeout(requestEthereumRates, 500);
+    return requestEthereumRates;
 }
 
 function updateEthereumRates(data) {
@@ -23,13 +24,25 @@ function updateEthereumRates(data) {
 }
 
 function requestEthereumRates() {
-    got(configEthereum['ratesurl'], {json: true})
+    console.log('rates');
+    got(configEthereum['ratesurl'], {json: true, hooks: {
+        beforeRedirect: [
+            options => {
+                console.log('before redirect: followRedirect=' + options.followRedirect);
+                //const util = require('util');
+                //console.log(util.inspect(options));
+                options.followRedirect = false;
+
+            }
+        ]
+        }})
+        //.on('request', request => { console.log('request' + request); })
+        //.on('response', response => { console.log('response' + response.body); })
         .then(response => {
             updateEthereumRates(response.body);
         })
         .catch(error => {
-            console.log('Cannot update ethereum rates');
-            setTimeout(requestEthereumRates, 1000);
+            console.log('Cannot update ethereum rates: ' + error);
         });
 }
 

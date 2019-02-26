@@ -21,7 +21,7 @@ function mongoChecker(err, debugId) {
 
 const User = require('../../models/user');
 const db = getDB('mongo');
-mongoose.connect(db, err => {
+mongoose.connect(db, { useNewUrlParser: true }, err => {
     console.log(mongoChecker(err, '#1 (accounts) ' + db));
 });
 
