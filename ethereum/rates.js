@@ -2,6 +2,7 @@
 
 const fs = require('fs');
 const got = require('got');
+const check = require('../check-dir');
 
 const config = require('../configs-reader').getServerConfig();
 const configEthereum = config['ethereum'];
@@ -10,6 +11,7 @@ const configOutput = configEthereum['output'];
 const fileEthereumRates = `${ configOutput['base'] }/${ configOutput['rates']}`;
 
 function init() {
+    check.checkAndMakeDirPath(configOutput['base']);
     if (!fs.existsSync(fileEthereumRates)) {
         updateEthereumRates({});
     }
@@ -27,6 +29,7 @@ function requestEthereumRates() {
         })
         .catch(error => {
             console.log('Cannot update ethereum rates');
+            setTimeout(requestEthereumRates, 1000);
         });
 }
 
