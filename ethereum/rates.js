@@ -20,8 +20,7 @@ function updateEthereumRates(data) {
     fs.writeFileSync(fileEthereumRates, JSON.stringify(data));
 }
 
-function getEthereumRates() {
-    console.log(configEthereum['ratesurl']);
+function requestEthereumRates() {
     got(configEthereum['ratesurl'], {json: true})
         .then(response => {
             updateEthereumRates(response.body);
@@ -29,10 +28,6 @@ function getEthereumRates() {
         .catch(error => {
             console.log('Cannot update ethereum rates');
         });
-}
-
-function requestEthereumRates() {
-    getEthereumRates();
 }
 
 module.exports.init = init;
