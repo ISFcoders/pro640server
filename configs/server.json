@@ -28,8 +28,8 @@
       "type": "websocket"
     },
     "contract": {
-      "address": "0xfcbb10fbc7c0a6ef80abc6bd674ae0254fe3972f",
-      "abi": "./blockchain/abi/contractAbi6040.json"
+      "address": "0xb924E90E21c7cf9B2bc6279e81C280A8126DA881",
+      "abi": "./blockchain/abi/contractAbi06.json"
     },
     "output": {
       "base": "./var/blockchain",
