@@ -1,38 +1,43 @@
 const fs = require('fs');
+
 const w3base = require('./base');
+const check = require('../common/check-dir');
 const web3 = w3base.web3;
 const config = w3base.config;
 const eContract = w3base.contractInstance;
 const configOutput = config['blockchain']['output'];
 
-const fileOffersToBuy = `${ configOutput['base'] }/${ configOutput['offerstobuy']}`;
-let allOffersToBuy = [];
+const fileOffersToSell = `${ configOutput['base'] }/${ configOutput['offerstosell']}`;
+let allOffersToSell = [];
 
 function init() {
-    if (!fs.existsSync(fileOffersToBuy)) {
-        updateOffersToBuy();
+    check.checkAndMakeDirPath(configOutput['base']);
+    if (!fs.existsSync(fileOffersToSell)) {
+        updateOffersToSell();
     }
-    setTimeout(requestAllOffersToBuy, 500);
+    setTimeout(requestAllOffersToSell, 500);
+    return requestAllOffersToSell;
 }
 
-function updateOffersToBuy() {
-    fs.writeFileSync(fileOffersToBuy, JSON.stringify(allOffersToBuy));
+function updateOffersToSell() {
+    fs.writeFileSync(fileOffersToSell, JSON.stringify(allOffersToSell));
 }
 
-function requestAllOffersToBuy() {
+function requestAllOffersToSell() {
+    console.log('sell');
     let allOffers = [];
     let uniqueAddresses = new Set();
     getEvents();
-    setTimeout(updateOffersToBuy, 5000);
+    setTimeout(updateOffersToSell, 5000);
 
     async function getEvents() {
         eContract.events
-            .OfferToBuy({filter: {}, fromBlock: 0, toBlock: 'latest'}, function (error, result) {})
+            .OfferToSell({filter: {}, fromBlock: 0, toBlock: 'latest'}, function (error, result) {})
             .on('data', (event) => {
                 let eventsJSON = web3.eth.abi.decodeLog(
                     [{
                         type: 'address',
-                        name: 'buyer',
+                        name: 'seller',
                         indexed: true
                     }, {
                         type: 'uint256',
@@ -46,24 +51,24 @@ function requestAllOffersToBuy() {
                     event.raw.data,
                     event.raw.topics[1]); // topics[1] has address
 
-                makeRequest(eventsJSON.buyer);
-                allOffersToBuy = allOffers;
+                makeRequest(eventsJSON.seller);
+                allOffersToSell = allOffers;
             });
     }
 
-    async function makeRequest(buyer) {
+    async function makeRequest(seller) {
         eContract.methods
-            .showOffersToBuy(buyer)
-            .call({from: buyer}, (err, result) => {
+            .showOffersToSell(seller)
+            .call({from: seller}, (err, result) => {
                 if (result) {
                     let item = {
-                        buyer: buyer,
+                        seller: seller,
                         valueLot: result[1],
                         price: result[2],
                         status: result[0]
                     };
-                    if (!uniqueAddresses.has(item.buyer) && item.valueLot != 0 && item.price != 0) {
-                        uniqueAddresses.add(item.buyer);
+                    if (!uniqueAddresses.has(item.seller) && item.valueLot != 0 && item.price != 0) {
+                        uniqueAddresses.add(item.seller);
                         allOffers.push(item);
                     }
                 }
@@ -72,5 +77,5 @@ function requestAllOffersToBuy() {
 }
 
 module.exports.init = init;
-module.exports.requestAllOffersToBuy = requestAllOffersToBuy;
-module.exports.fileOffersToBuy = fileOffersToBuy;
+module.exports.requestAllOffersToSell = requestAllOffersToSell;
+module.exports.fileOffersToSell = fileOffersToSell;

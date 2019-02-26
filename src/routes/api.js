@@ -2,11 +2,11 @@ const express = require('express');
 
 const router = express.Router();
 
-const dbconnector = require('../dbconnector');
+const dbconnector = require('../db/dbconnector');
 const User = dbconnector.User;
 //const Data = dbconnector.Data;
 
-const verifyToken = require('../token').verifyToken;
+const verifyToken = require('../common/token').verifyToken;
 
 router.get('/', (req, res) => {
     res.send('From API route');
