@@ -1,25 +1,32 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const api = require('./routes/api');
-const apiAuth = require('./routes/api-auth');
-const apiBlockchain = require('./routes/api-blockchain');
-const apiEthrereumRates = require('./routes/api-ethereum-rates');
 
 const PORT = 3000;
 const app = express();
 
-const offersToSell = require('./blockchain/offers-to-sell');
+
+// Server engine parts
+
+const offersToSell = require('./src/blockchain/offers-to-sell');
 offersToSell.init();
-setInterval(offersToSell.requestAllOffersToSell, 30000);
+setInterval(offersToSell.requestAllOffersToSell, 40000);
 
-const offersToBuy = require('./blockchain/offers-to-buy');
+const offersToBuy = require('./src/blockchain/offers-to-buy');
 offersToBuy.init();
-setInterval(offersToBuy.requestAllOffersToBuy, 30000);
+setInterval(offersToBuy.requestAllOffersToBuy, 43000);
 
-const ethRates = require('./ethereum/rates');
+const ethRates = require('./src/ethereum/rates');
 ethRates.init();
 setInterval(ethRates.requestEthereumRates, 125000);
+
+
+// Routing
+
+const api = require('./src/routes/api');
+const apiAuth = require('./src/routes/api-auth');
+const apiBlockchain = require('./src/routes/api-blockchain');
+const apiEthrereumRates = require('./src/routes/api-ethereum-rates');
 
 app.use(cors());
 app.use(bodyParser.json());
