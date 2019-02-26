@@ -36,5 +36,12 @@
       "offerstosell": "offers-to-sell.json",
       "offerstobuy": "offers-to-buy.json"
     }
+  },
+  "ethereum": {
+    "ratesurl": "https://api.cryptonator.com/api/ticker/eth-rub",
+    "output": {
+      "base": "./var/ethereum",
+      "rates": "rates.json"
+    }
   }
 }
