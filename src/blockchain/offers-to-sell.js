@@ -1,6 +1,7 @@
 const fs = require('fs');
+
 const w3base = require('./base');
-const check = require('../check-dir');
+const check = require('../common/check-dir');
 const web3 = w3base.web3;
 const config = w3base.config;
 const eContract = w3base.contractInstance;

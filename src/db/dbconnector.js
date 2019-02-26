@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 //const readJsonFileSync = require('./configs-reader').readJsonFileSync;
 //const config = readJsonFileSync('configs/server.json');
-const config = require('./configs-reader').getServerConfig();
+const config = require('../configs/configs-reader').getServerConfig();
 
 function getDB(id) {
     return `mongodb://`
@@ -19,7 +19,7 @@ function mongoChecker(err, debugId) {
         : 'Connected to mongodb ' + debugId;
 }
 
-const User = require('./models/user');
+const User = require('../../models/user');
 const db = getDB('mongo');
 mongoose.connect(db, err => {
     console.log(mongoChecker(err, '#1 (accounts) ' + db));

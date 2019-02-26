@@ -2,9 +2,9 @@ const express = require('express');
 const jwt = require('jsonwebtoken');
 const router = express.Router();
 
-const config = require('../configs-reader').getServerConfig();
+const config = require('../configs/configs-reader').getServerConfig();
 
-const dbconnector = require('../dbconnector');
+const dbconnector = require('../db/dbconnector');
 const User = dbconnector.User;
 
 router.post('/register', (req, res) => {

@@ -2,9 +2,9 @@
 
 const fs = require('fs');
 const got = require('got');
-const check = require('../check-dir');
 
-const config = require('../configs-reader').getServerConfig();
+const check = require('../common/check-dir');
+const config = require('../configs/configs-reader').getServerConfig();
 const configEthereum = config['ethereum'];
 const configOutput = configEthereum['output'];
 
