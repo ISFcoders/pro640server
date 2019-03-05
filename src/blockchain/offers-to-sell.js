@@ -9,6 +9,7 @@ const configOutput = config['blockchain']['output'];
 
 const fileOffersToSell = `${ configOutput['base'] }/${ configOutput['offerstosell']}`;
 let allOffersToSell = [];
+let tokensInfo = w3base.tokensInfoInit();
 
 function init() {
     check.checkAndMakeDirPath(configOutput['base']);
@@ -21,6 +22,7 @@ function init() {
 
 function updateOffersToSell() {
     fs.writeFileSync(fileOffersToSell, JSON.stringify(allOffersToSell));
+    w3base.parseOffersArrayAndUpdateTokensInfo(allOffersToSell, tokensInfo);
 }
 
 function requestAllOffersToSell() {
@@ -79,3 +81,4 @@ function requestAllOffersToSell() {
 module.exports.init = init;
 module.exports.requestAllOffersToSell = requestAllOffersToSell;
 module.exports.fileOffersToSell = fileOffersToSell;
+module.exports.tokensInfo = tokensInfo;
