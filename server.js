@@ -12,6 +12,7 @@ const server = require('./src/common/server-emitter').server;
 server.register(require('./src/blockchain/offers-to-sell').init(), {delay: 2000, interval: 'medium'});
 server.register(require('./src/blockchain/offers-to-buy').init(), {delay: 5000, interval: 'medium'});
 server.register(require('./src/ethereum/rates').init(), {delay: 3000, interval: 'large'});
+server.register(require('./src/blockchain/total-supply').init(), {delay: 500, interval: 'medium'});
 
 
 // Routing
