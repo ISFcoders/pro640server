@@ -7,11 +7,16 @@ const config = require('../configs/configs-reader').getServerConfig();
 const configProvider = config['blockchain']['provider'];
 const configContract = config['blockchain']['contract'];
 
-const wsProvider = configProvider['address'];
-const web3 = new Web3(new Web3.providers.WebsocketProvider(wsProvider));
 const contractAddress = configContract['address'];
 const contractABI = JSON.parse(fs.readFileSync(configContract['abi'], 'utf-8'));
-const eContract = web3.eth.Contract(contractABI, contractAddress);
+
+const wsProviderAddress = configProvider['websocket']['address'];
+const web3ws = new Web3(new Web3.providers.WebsocketProvider(wsProviderAddress));
+const wsContract = web3ws.eth.Contract(contractABI, contractAddress);
+
+const httpProviderAddress = configProvider['http']['address'];
+const web3http = new Web3(new Web3.providers.HttpProvider(httpProviderAddress));
+const httpContract = web3http.eth.Contract(contractABI, contractAddress);
 
 let contractInfo = getEmptyInfoContract();
 
@@ -92,9 +97,10 @@ function parseOffersArray(allOffersArray) {
     return res;
 }
 
-module.exports.web3 = web3;
+module.exports.web3 = web3ws;
 module.exports.config = config;
-module.exports.contractInstance = eContract;
+module.exports.contractInstance = wsContract;
+module.exports.contractInstanceBase = httpContract;
 module.exports.contractInfo = contractInfo;
 module.exports.tokensInfoInit = tokensInfoInit;
 module.exports.tokensInfoUpdate = tokensInfoUpdate;

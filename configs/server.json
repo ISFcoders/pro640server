@@ -25,8 +25,12 @@
   },
   "blockchain": {
     "provider": {
-      "address": "wss://ropsten.infura.io/ws",
-      "type": "websocket"
+      "websocket": {
+        "address": "wss://ropsten.infura.io/ws"
+      },
+      "http": {
+        "address": "https://ropsten.infura.io/v3/e4c80087f04c4a51ba9a4bf1d43897b5"
+      }
     },
     "contract": {
       "address": "0xb924E90E21c7cf9B2bc6279e81C280A8126DA881",
