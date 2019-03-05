@@ -1,27 +1,37 @@
 const fs = require('fs');
 const express = require('express');
 const router = express.Router();
-const fileOffersToSell = require('../blockchain/offers-to-sell').fileOffersToSell;
-const fileOffersToBuy = require('../blockchain/offers-to-buy').fileOffersToBuy;
+const offersToSell = require('../blockchain/offers-to-sell');
+//const fileOffersToSell = offersToSell.fileOffersToSell;
+const offersToBuy = require('../blockchain/offers-to-sell');
+//const fileOffersToBuy = offersToBuy.fileOffersToBuy;
 
 router.get('/', (req, res) => {
     res.send('From API route: blockchain');
 });
 
 router.get('/get-offers-to-sell', (req, res) => {
-    if (fs.existsSync(fileOffersToSell)) {
-        res.send(fs.readFileSync(fileOffersToSell, 'utf-8'));
+    if (fs.existsSync(offersToSell.fileOffersToSell)) {
+        res.send(fs.readFileSync(offersToSell.fileOffersToSell, 'utf-8'));
     } else {
         res.send('[]');
     }
 });
 
 router.get('/get-offers-to-buy', (req, res) => {
-    if (fs.existsSync(fileOffersToBuy)) {
-        res.send(fs.readFileSync(fileOffersToBuy, 'utf-8'));
+    if (fs.existsSync(offersToBuy.fileOffersToBuy)) {
+        res.send(fs.readFileSync(offersToBuy.fileOffersToBuy, 'utf-8'));
     } else {
         res.send('[]');
     }
+});
+
+router.get('/info-offers-to-sell', (req, res) => {
+    res.status(200).send(offersToSell.tokensInfo);
+});
+
+router.get('/info-offers-to-buy', (req, res) => {
+    res.status(200).send(offersToBuy.tokensInfo);
 });
 
 module.exports = router;
