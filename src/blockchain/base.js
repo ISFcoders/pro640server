@@ -78,7 +78,7 @@ function tokensInfoUpdate(tokensInfo, tokensTotal, costTotal, offersCount) {
     }
 }
 
-function parseOffersArray(allOffersArray) { //, tokensInfo) {
+function parseOffersArray(allOffersArray) {
     let res = {
         count: 0,
         tokens: 0,
