@@ -19,14 +19,14 @@ server.register(require('./src/ethereum/rates').init(), {delay: 3000, interval: 
 const api = require('./src/routes/api');
 const apiAuth = require('./src/routes/api-auth');
 const apiBlockchain = require('./src/routes/api-blockchain');
-const apiEthrereumRates = require('./src/routes/api-ethereum-rates');
+const apiEthereumRates = require('./src/routes/api-ethereum-rates');
 
 app.use(cors());
 app.use(bodyParser.json());
 app.use('/api', api);
 app.use('/api/auth', apiAuth);
 app.use('/api/blockchain', apiBlockchain);
-app.use('/api/ethereum-rates', apiEthrereumRates);
+app.use('/api/ethereum-rates', apiEthereumRates);
 
 app.get('/', (req, res) => {
     res.send('ISF640 backend server');
