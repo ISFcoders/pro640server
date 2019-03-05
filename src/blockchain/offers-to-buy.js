@@ -1,3 +1,5 @@
+'use strict';
+
 const fs = require('fs');
 
 const w3base = require('./base');
@@ -22,7 +24,9 @@ function init() {
 
 function updateOffersToBuy() {
     fs.writeFileSync(fileOffersToBuy, JSON.stringify(allOffersToBuy));
-    w3base.parseOffersArrayAndUpdateTokensInfo(allOffersToBuy, tokensInfo);
+    const info = w3base.parseOffersArray(allOffersToBuy);
+    w3base.tokensInfoUpdate(tokensInfo, info.tokens, info.cost, info.count);
+    w3base.contractInfo.tokens.buy = info.tokens;
 }
 
 function requestAllOffersToBuy() {
