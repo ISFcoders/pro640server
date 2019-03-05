@@ -2,9 +2,7 @@ const fs = require('fs');
 const express = require('express');
 const router = express.Router();
 const offersToSell = require('../blockchain/offers-to-sell');
-//const fileOffersToSell = offersToSell.fileOffersToSell;
-const offersToBuy = require('../blockchain/offers-to-sell');
-//const fileOffersToBuy = offersToBuy.fileOffersToBuy;
+const offersToBuy = require('../blockchain/offers-to-buy');
 
 router.get('/', (req, res) => {
     res.send('From API route: blockchain');
