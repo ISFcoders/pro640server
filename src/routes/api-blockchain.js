@@ -3,6 +3,7 @@ const express = require('express');
 const router = express.Router();
 const offersToSell = require('../blockchain/offers-to-sell');
 const offersToBuy = require('../blockchain/offers-to-buy');
+const w3base = require('../blockchain/base');
 
 router.get('/', (req, res) => {
     res.send('From API route: blockchain');
@@ -22,6 +23,10 @@ router.get('/get-offers-to-buy', (req, res) => {
     } else {
         res.send('[]');
     }
+});
+
+router.get('/info-contract', (req, res) => {
+    res.status(200).send(w3base.contractInfo);
 });
 
 router.get('/info-offers-to-sell', (req, res) => {
