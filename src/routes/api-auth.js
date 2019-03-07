@@ -54,8 +54,11 @@ router.post('/login', (req, res) => {
                 res.status(200).send({
                     token,
                     username: user.username,
-                    admin: user.adminstate ? "true" : "false",
-                    owner: user.owner ? "true" : "false"
+                    wallet: user.info.wallet,
+                    kys: user.check.kys ? "true": "false",
+                    user: user.roles.user.enabled ? "true" : "false",
+                    admin: user.roles.admin.enabled ? "true" : "false",
+                    owner: user.roles.owner.enabled ? "true" : "false"
                 });
             }
         }
