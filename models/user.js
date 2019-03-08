@@ -1,3 +1,5 @@
+'use strict';
+
 const mongoose = require('mongoose');
 
 const readJsonFileSync = require('../src/configs/configs-reader').readJsonFileSync;
@@ -25,7 +27,7 @@ const userSchema = new Schema({
         },
         admin: {
             enabled: Boolean, // adminstate
-            permit: [{ type: String }] // adminrole
+            permit: [{ type: String }] // adminrole: superuser | whitelister | locker | corrector | moderator
         },
         owner: {
             enabled: Boolean,
@@ -33,22 +35,16 @@ const userSchema = new Schema({
         }
     }
 });
+const User = mongoose.model('user', userSchema, config['mongo3']['dbname']);
 
-/*
-    owner: Boolean,
-    usercheck: Boolean, // checked | unchecked
-    adminstate: Boolean, // no | yes
-    adminrole: String, // superuser | whitelister | locker | corrector | moderator
-    vallets: [{
-        type: String
-    }]
-*/
-
-function initUser(user) {
-    user.login = user.username;
+function initUser(data) {
+    let user = new User();
+    user.username = data.username ? data.username : '';
+    user.login = data.username;
+    user.password = data.password ? data.password : '';
+    user.info.email = data.email ? data.email : '';
     user.info.name = 'Vasya Pupkin (new user)';
     user.info.phone = '-';
-    user.info.email = '-';
     user.info.wallet = '0x0000000000000000000000000000000000000000';
     user.check.email = false;
     user.check.kys = false;
@@ -58,5 +54,5 @@ function initUser(user) {
     return user;
 }
 
-module.exports = mongoose.model('user', userSchema, config['mongo3']['dbname']);
+module.exports = User;
 module.exports.initUser = initUser;
