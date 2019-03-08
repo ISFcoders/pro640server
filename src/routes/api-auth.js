@@ -11,23 +11,24 @@ const User = dbconnector.User;
 
 router.post('/register', (req, res) => {
     console.log(`${ req.baseUrl }/register`);
+    const lib = require('./api-auth/register');
     const user = User.initUser({
         username: req.body.username,
         email: req.body.email,
         password: req.body.password
     });
-    registerFormDataCheck(user)
-        .catch(error => sendResponseFail(res, error, 'Incorrect form fields'))
-        .then(user => userNoExistsIntoDB(user))
-        .then(checkedUser => saveToDB(checkedUser))
-        .then(registeredUser => sendResponseOk(res, registeredUser))
-        .catch(error => sendResponseFail(res, error, 'User exists'));
+    lib.registerFormDataCheck(user)
+        .catch(error => lib.sendResponseFail(res, error, 'Incorrect form fields'))
+        .then(user => lib.userNoExistsIntoDB(User, user))
+        .then(checkedUser => lib.saveToDB(checkedUser))
+        .then(registeredUser => lib.sendResponseOk(res, registeredUser))
+        .catch(error => lib.sendResponseFail(res, error, 'User exists'));
 });
 
 router.post('/login', (req, res) => {
     console.log('/login');
     let userData = new User(req.body);
-    User.findOne({username: userData.username}, (error, user) => {
+    User.findOne({ username: userData.username }, (error, user) => {
         if (error) {
             console.log(error);
         } else {
@@ -51,52 +52,5 @@ router.post('/login', (req, res) => {
         }
     });
 });
-
-function registerFormDataCheck(user) {
-    return new Promise((resolve, reject) => {
-        if (user.username === '' || user.password === '' || user.info.email === '') {
-            reject();
-        }
-        resolve(user);
-    });
-}
-
-function userNoExistsIntoDB(user) {
-    return new Promise((resolve, reject) => {
-        User.find({username: user.username}, (error, username) => {
-            if (error) {
-                reject();
-            }
-            if (Object.keys(username).length !== 0) {
-                reject(`There is user with username ${ user.username } in database`);
-            } else {
-                resolve(user);
-            }
-        });
-    });
-}
-
-function saveToDB(user) {
-    return new Promise((resolve, reject) => {
-        user.save((error, registeredUser) => {
-            if (error) {
-                reject();
-            }
-            resolve(registeredUser);
-        });
-    });
-}
-
-function sendResponseOk(response, user) {
-    console.log('Create user: ' + user.username);
-    let payload = {subject: user._id};
-    let token = jwt.sign(payload, config['token']['secretkey']);
-    response.status(200).send({token});
-}
-
-function sendResponseFail(response, error, message) {
-    console.log('send response fail: ' + error);
-    response.status(401).send(message);
-}
 
 module.exports = router;
