@@ -1,3 +1,6 @@
+/**
+ * Обработчики запросов /api/auth/
+ */
 'use strict';
 
 const express = require('express');
@@ -6,6 +9,7 @@ const router = express.Router();
 const dbconnector = require('../db/dbconnector');
 const User = dbconnector.User;
 
+// Запрос на регистрацию новой учетной записи /api/auth/register
 router.post('/register', (req, res) => {
     console.log(`${ req.baseUrl }/register`);
     const lib = require('./api-auth/register');
@@ -22,6 +26,7 @@ router.post('/register', (req, res) => {
         .catch(error => lib.sendResponseFail(res, error, 'User exists'));
 });
 
+// Запрос на вход учетной записи /api/auth/login
 router.post('/login', (req, res) => {
     console.log(`${ req.baseUrl }/login`);
     const lib = require('./api-auth/login');
