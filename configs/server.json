@@ -20,6 +20,13 @@
     "username": "krasikov",
     "password": "krauff78"
   },
+  "mongo3": {
+    "url": "ds247407.mlab.com",
+    "port": "47407",
+    "dbname": "k6040_accounts",
+    "username": "user6040",
+    "password": "psuser6040"
+  },
   "token": {
     "secretkey": "secretKey"
   },
