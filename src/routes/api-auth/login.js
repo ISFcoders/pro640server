@@ -16,7 +16,7 @@ async function findUserIntoDB(UserDB, reqUser) {
     return new Promise((resolve, reject) => {
         UserDB.findOne({username: reqUser.username}, (error, dbUser) => {
             if (error) {
-                console.log(`find user into db err ${ error }`)
+                console.log(`find user into db err ${ error }`);
                 reject();
             }
             if (!dbUser) {
@@ -32,7 +32,9 @@ async function findUserIntoDB(UserDB, reqUser) {
 
 async function sendResponseOk(response, user) {
     console.log('send response ok');
-    const payload = { subject: user._id };
+    const payload = {
+        subject: user._id
+    };
     const token = jwt.sign(payload, config['token']['secretkey']);
     response.status(200).send({
         token,

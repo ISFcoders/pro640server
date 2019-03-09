@@ -1,5 +1,6 @@
-const express = require('express');
+'use strict';
 
+const express = require('express');
 const router = express.Router();
 
 const dbconnector = require('../db/dbconnector');
@@ -9,7 +10,13 @@ const User = dbconnector.User;
 const verifyToken = require('../common/token').verifyToken;
 
 router.get('/', (req, res) => {
-    res.send('From API route');
+    console.log(`${ req.baseUrl }/`);
+    res.status(200).send(`router: ${ req.baseUrl }/`);
+});
+
+router.get('/a', verifyToken, (req, res) => {
+    console.log(`${ req.baseUrl }/a`);
+    res.status(200).send(`router: ${ req.baseUrl }/a`);
 });
 
 router.post('/user', (req, res) => {
@@ -77,48 +84,5 @@ router.post('/userslist', (req, res) => {
         }
     })
 });
-router.post('/krasikov/datatab', (req, res) => {
-    res.status(404).send('No path: /krasikov/datatab');
-});
-/*router.get('/krasikov/datatab', (req, res) => {
-    Data.find({table: 'price'}, (error, rows) => {
-        if (error) {
-           console.log(error);
-        } else {
-           let rowMass = [];
-           rows.forEach(function(row) {
-               rowMass[rowMass.length] = {
-                   table: row.table,
-                   row: row.row,
-                   column: row.column,
-                   data: row.data
-               };
-           });
-           res.status(200).send({
-               list: rowMass
-           });
-        }
-    })
-});
-
-router.get('/events', (req, res) => {
-    let events = [
-        {
-            "_id": "1",
-            "date": "2012-04-23T18:25:43.511Z"
-        }
-    ];
-    res.json(events);
-});
-
-router.get('/special', verifyToken, (req, res) => {
-    let events = [
-        {
-            "_id": "1",
-            "date": "2012-04-23T18:25:43.511Z"
-        }
-    ];
-    res.json(events);
-});*/
 
 module.exports = router;
