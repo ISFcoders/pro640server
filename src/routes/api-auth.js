@@ -1,10 +1,7 @@
 'use strict';
 
 const express = require('express');
-const jwt = require('jsonwebtoken');
 const router = express.Router();
-
-const config = require('../configs/configs-reader').getServerConfig();
 
 const dbconnector = require('../db/dbconnector');
 const User = dbconnector.User;
@@ -26,31 +23,14 @@ router.post('/register', (req, res) => {
 });
 
 router.post('/login', (req, res) => {
-    console.log('/login');
-    let userData = new User(req.body);
-    User.findOne({ username: userData.username }, (error, user) => {
-        if (error) {
-            console.log(error);
-        } else {
-            if (!user) {
-                res.status(401).send('Invalid username or password');
-            } else if (user.password !== userData.password) {
-                res.status(401).send('Invalid username or password');
-            } else {
-                let payload = { subject: user._id };
-                let token = jwt.sign(payload, config['token']['secretkey']);
-                res.status(200).send({
-                    token,
-                    username: user.username,
-                    wallet: user.info.wallet,
-                    kys: user.check.kys ? "true": "false",
-                    user: user.roles.user.enabled ? "true" : "false",
-                    admin: user.roles.admin.enabled ? "true" : "false",
-                    owner: user.roles.owner.enabled ? "true" : "false"
-                });
-            }
-        }
-    });
+    console.log(`${ req.baseUrl }/login`);
+    const lib = require('./api-auth/login');
+    const user = new User(req.body);
+    lib.registerFormDataCheck(user)
+        .catch(error => lib.sendResponseFail(res, error, 'Incorrect form fields'))
+        .then(user => lib.findUserIntoDB(User, user))
+        .then(user => lib.sendResponseOk(res, user))
+        .catch(error => lib.sendResponseFail(res, error, error));
 });
 
 module.exports = router;
