@@ -1,5 +1,8 @@
 {
   "server": {
+    "protocol": "http",
+    "baseurl": "localhost",
+    "port": "3000",
     "emitterintervals": {
       "short": "10000",
       "medium": "55000",
@@ -19,6 +22,13 @@
     "dbname": "krasikov_p640",
     "username": "krasikov",
     "password": "krauff78"
+  },
+  "mongo3": {
+    "url": "ds247407.mlab.com",
+    "port": "47407",
+    "dbname": "k6040_accounts",
+    "username": "user6040",
+    "password": "psuser6040"
   },
   "token": {
     "secretkey": "secretKey"
@@ -47,6 +57,14 @@
     "output": {
       "base": "./var-data/ethereum",
       "rates": "rates.json"
+    }
+  },
+  "mailer": {
+    "qlfund_yndx": {
+      "service": "yandex",
+      "host": "smtp.yandex.ru",
+      "user": "qlfund.mailer@yandex.ru",
+      "password": "qlfund444QQ"
     }
   }
 }

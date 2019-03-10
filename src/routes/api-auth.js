@@ -1,65 +1,42 @@
-const express = require('express');
-const jwt = require('jsonwebtoken');
-const router = express.Router();
+/**
+ * Обработчики запросов /api/auth/
+ */
+'use strict';
 
-const config = require('../configs/configs-reader').getServerConfig();
+const express = require('express');
+const router = express.Router();
 
 const dbconnector = require('../db/dbconnector');
 const User = dbconnector.User;
 
+// Запрос на регистрацию новой учетной записи /api/auth/register
 router.post('/register', (req, res) => {
-    console.log('/register');
-    let reqUser = new User(req.body);
-    reqUser = User.initUser(reqUser);
-
-    User.find({username: reqUser.username}, (error, user) => {
-        if (error) {
-            console.log(error);
-        } else {
-            console.log('length: ' + Object.keys(user).length);
-            if (Object.keys(user).length === 0) {
-                console.log('Find no users with login: ' + reqUser.username);
-                reqUser.save((error, registeredUser) => {
-                    if (error) {
-                        console.log(error);
-                    } else {
-                        console.log('Create user: ' + reqUser.username);
-                        let payload = { subject: registeredUser._id };
-                        let token = jwt.sign(payload, config['token']['secretkey']);
-                        res.status(200).send({token});
-                    }
-                });
-            } else {
-                console.log(`There is user with username ${ reqUser.username } in database`);
-                res.status(401).send('User exists');
-            }
-        }
+    console.log(`${ req.baseUrl }/register`);
+    const lib = require('./api-auth/register');
+    const user = User.initUser({
+        username: req.body.username,
+        email: req.body.email,
+        password: req.body.password
     });
+    lib.registerFormDataCheck(user)
+        .catch(error => lib.sendResponseFail(res, error, 'Incorrect form fields'))
+        .then(user => lib.userNoExistsIntoDB(User, user))
+        .then(checkedUser => lib.saveToDB(checkedUser))
+        .then(registeredUser => lib.sendResponseOk(res, registeredUser))
+        .catch(error => lib.sendResponseFail(res, error, 'User exists'))
+        .then(token => lib.sendVerificationMail(token, user.username, user.info.email));
 });
 
+// Запрос на вход учетной записи /api/auth/login
 router.post('/login', (req, res) => {
-    console.log('/login');
-    let userData = new User(req.body);
-    User.findOne({username: userData.username}, (error, user) => {
-        if (error) {
-            console.log(error);
-        } else {
-            if (!user) {
-                res.status(401).send('Invalid username or password');
-            } else if (user.password !== userData.password) {
-                res.status(401).send('Invalid username or password');
-            } else {
-                let payload = { subject: user._id };
-                let token = jwt.sign(payload, config['token']['secretkey']);
-                res.status(200).send({
-                    token,
-                    username: user.username,
-                    admin: user.adminstate ? "true" : "false",
-                    owner: user.owner ? "true" : "false"
-                });
-            }
-        }
-    });
+    console.log(`${ req.baseUrl }/login`);
+    const lib = require('./api-auth/login');
+    const user = new User(req.body);
+    lib.registerFormDataCheck(user)
+        .catch(error => lib.sendResponseFail(res, error, 'Incorrect form fields'))
+        .then(user => lib.findUserIntoDB(User, user))
+        .then(user => lib.sendResponseOk(res, user))
+        .catch(error => lib.sendResponseFail(res, error, error));
 });
 
 module.exports = router;
