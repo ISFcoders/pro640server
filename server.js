@@ -3,8 +3,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-
-const PORT = 3000;
 const app = express();
 
 
@@ -23,6 +21,7 @@ const api = require('./src/routes/api');
 const apiAuth = require('./src/routes/api-auth');
 const apiBlockchain = require('./src/routes/api-blockchain');
 const apiEthereumRates = require('./src/routes/api-ethereum-rates');
+const apiVerification = require('./src/routes/verification');
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -30,11 +29,18 @@ app.use('/api', api);
 app.use('/api/auth', apiAuth);
 app.use('/api/blockchain', apiBlockchain);
 app.use('/api/ethereum-rates', apiEthereumRates);
+app.use('/verification', apiVerification);
 
 app.get('/', (req, res) => {
     res.send('ISF640 backend server');
 });
 
-app.listen(PORT, () => {
-    console.log('Server running on localhost: ' + PORT);
+
+// Init port listener
+
+const config = require('./src/configs/configs-reader').getServerConfig();
+const port = parseInt(config['server']['port']);
+
+app.listen(port, () => {
+    console.log('Server running on localhost: ' + port);
 });
