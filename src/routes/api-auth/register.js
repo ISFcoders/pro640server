@@ -47,7 +47,7 @@ async function saveToDB(user) {
 
 // Отправка HTTP-ответа (с кодом 200) об успехе запроса
 async function sendResponseOk(response, user) {
-    console.log(`send response ok: ${ user.username }`);
+    const random = require('../../common/random');
     return new Promise((resolve, reject) => {
         let payload = {
             subject: user._id
@@ -57,7 +57,7 @@ async function sendResponseOk(response, user) {
 
         // token2 отправляется на электронную почту владельца учетной записи в виде проверочного кода
         let token2 = jwt.sign({
-                subject: user._id + '123'
+                subject: user._id + random.getRandomInt(1, 999)
             },
             config['token']['secretkey']);
         resolve(token2);
@@ -71,10 +71,12 @@ async function sendResponseFail(response, error, message) {
     response.status(401).send(message);
 }
 
+// Отправка письма для прохождения верификации
 async function sendVerificationMail(token, username, email) {
-    console.log('send verificaiton mail');
-    const url = `${ config['server']['protocol'] }://${ config['server']['baseurl'] }:${ config['server']['port'] }/verification/${ token }`;
-    mailer.sendVerificationMail(username, email, url);
+    if (token) {
+        const url = `${ config['server']['protocol'] }://${ config['server']['baseurl'] }:${ config['server']['port'] }/verification/${ token }`;
+        mailer.sendVerificationMail(username, email, url);
+    }
 }
 
 module.exports.registerFormDataCheck = registerFormDataCheck;
