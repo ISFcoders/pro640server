@@ -73,7 +73,7 @@ async function sendResponseFail(response, error, message) {
 
 async function sendVerificationMail(token, username, email) {
     console.log('send verificaiton mail');
-    const url = `${ config['server']['protocol'] }//${ config['server']['baseurl'] }${ config['server']['port'] }/verification/${ token }`;
+    const url = `${ config['server']['protocol'] }://${ config['server']['baseurl'] }:${ config['server']['port'] }/verification/${ token }`;
     mailer.sendVerificationMail(username, email, url);
 }
 
