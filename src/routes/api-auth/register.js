@@ -4,8 +4,15 @@
 'use strict';
 
 const jwt = require('jsonwebtoken');
-const config = require('../../common/configs-reader').getServerConfig();
 const mailer = require('../../mailer/email-verification');
+
+const config = require('../../common/configs-reader');
+const configData = {
+    secret: config.get.string('token.secretkey', () => { throw new Error('Cannot define secret key'); }),
+    protocol: config.get.string('server.protocol', () => { throw new Error('Cannot define protocol'); }),
+    baseurl: config.get.string('server.baseurl', () => { throw new Error('Cannot define base url'); }),
+    port: config.get.string('server.port', () => { throw new Error('Cannot define port'); })
+};
 
 // Варианты пояснений к выдаваемым сервером HTTP-ответам
 const failMessages = require('../../common/http-response').getFailMessagesEmptyObj();
@@ -53,7 +60,6 @@ async function userNoExistsIntoDB(UserDB, user) {
             }
             if (Object.keys(username).length !== 0) {
                 reject(failMessages.known.user_exists);
-                // console.log(`There is user with username ${ user.username } in database`);
             } else {
                 resolve(user);
             }
@@ -77,20 +83,16 @@ async function saveToDB(user) {
 async function sendResponseOk(response, user) {
     const random = require('../../common/random');
     return new Promise((resolve, reject) => {
-        let payload = {
-            subject: user._id
-        };
-        let token = jwt.sign(payload, config['token']['secretkey']);
+        // token передается клиенту (в localStorage его браузера) и применяется в контроле сессий
+        let payload = { subject: user._id };
+        let token = jwt.sign(payload, configData.secret);
         response.status(200).send({ token });
 
         // token2 отправляется на электронную почту владельца учетной записи в виде проверочного кода
-        let token2 = jwt.sign({
-                subject: user._id + random.getRandomInt()
-            },
-            config['token']['secretkey']);
+        let payload2 = { subject: user._id + random.getRandomInt() };
+        let token2 = jwt.sign(payload2, configData.secret);
         resolve(token2);
     });
-
 }
 
 // Отправка HTTP-ответа (с кодом 401) о неуспехе запроса, а также о внутреннем сбое (код 500)
@@ -106,7 +108,7 @@ async function sendResponseFail(response, error) {
 // Отправка письма для прохождения верификации
 async function sendVerificationMail(token, username, email) {
     if (token) {
-        const url = `${ config['server']['protocol'] }://${ config['server']['baseurl'] }:${ config['server']['port'] }/verification/${ token }`;
+        const url = `${ configData.protocol }://${ configData.baseurl }:${ configData.port }/verification/${ token }`;
         mailer.sendVerificationMail(username, email, url);
     }
 }

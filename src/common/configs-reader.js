@@ -48,7 +48,24 @@ function getNumber(selector, errCallback) {
 }
 
 function getString(selector, errCallback) {
-    throw new Error('empty function getString');
+    let data = getServerConfig();
+    try {
+        selector.split('.').forEach(item => {
+            data = data[`${ item }`];
+        });
+    } catch (e) {
+        if (typeof errCallback === 'undefined') {
+            throw new Error('cannot parse callback');
+        }
+        if (typeof errCallback === 'function') {
+            return errCallback();
+        }
+        if (typeof errCallback === 'string') {
+            return errCallback;
+        }
+        throw new Error('cannot parse callback');
+    }
+    return data;
 }
 
 function getObject(selector, errCallback) {
