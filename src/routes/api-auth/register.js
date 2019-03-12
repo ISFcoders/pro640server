@@ -85,7 +85,7 @@ async function sendResponseOk(response, user) {
 
         // token2 отправляется на электронную почту владельца учетной записи в виде проверочного кода
         let token2 = jwt.sign({
-                subject: user._id + random.getRandomInt(1, 999)
+                subject: user._id + random.getRandomInt()
             },
             config['token']['secretkey']);
         resolve(token2);
