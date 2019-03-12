@@ -38,8 +38,10 @@ app.get('/', (req, res) => {
 
 // Init port listener
 
-const config = require('./src/configs/configs-reader').getServerConfig();
-const port = parseInt(config['server']['port']);
+const config = require('./src/configs/configs-reader');
+const port = config.get.number('server.port', () => {
+    throw new Error('FATAL ERROR: cannot define server port');
+});
 
 app.listen(port, () => {
     console.log('Server running on localhost: ' + port);

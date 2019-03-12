@@ -9,7 +9,7 @@
       "large": "125000"
     }
   },
-  "system_" : {
+  "system" : {
     "random" : {
       "min": "1",
       "max": "999"
