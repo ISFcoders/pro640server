@@ -9,6 +9,12 @@
       "large": "125000"
     }
   },
+  "system" : {
+    "random" : {
+      "min": "1",
+      "max": "999"
+    }
+  },
   "mongo": {
     "url": "ds129926.mlab.com",
     "port": "29926",

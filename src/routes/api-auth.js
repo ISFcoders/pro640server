@@ -19,12 +19,12 @@ router.post('/register', (req, res) => {
         password: req.body.password
     });
     lib.registerFormDataCheck(user)
-        .catch(error => lib.sendResponseFail(res, error, 'Incorrect form fields'))
+        .then(() => lib.emailDuplicateCheckIntoDB(User, user))
         .then(user => lib.userNoExistsIntoDB(User, user))
         .then(checkedUser => lib.saveToDB(checkedUser))
         .then(registeredUser => lib.sendResponseOk(res, registeredUser))
-        .catch(error => lib.sendResponseFail(res, error, 'User exists'))
-        .then(token => lib.sendVerificationMail(token, user.username, user.info.email));
+        .then(token => lib.sendVerificationMail(token, user.username, user.info.email))
+        .catch(error => lib.sendResponseFail(res, error));
 });
 
 // Запрос на вход учетной записи /api/auth/login
