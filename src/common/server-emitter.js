@@ -1,6 +1,6 @@
 'use strict';
 
-const config = require('../configs/configs-reader').getServerConfig();
+const config = require('./configs-reader').getServerConfig();
 const configServerIntervals = config['server']['emitterintervals'];
 
 const EventEmitter = require('events').EventEmitter;

@@ -38,7 +38,7 @@ app.get('/', (req, res) => {
 
 // Init port listener
 
-const config = require('./src/configs/configs-reader');
+const config = require('./src/common/configs-reader');
 const port = config.get.number('server.port', () => {
     throw new Error('FATAL ERROR: cannot define server port');
 });

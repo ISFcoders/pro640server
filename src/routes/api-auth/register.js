@@ -4,7 +4,7 @@
 'use strict';
 
 const jwt = require('jsonwebtoken');
-const config = require('../../configs/configs-reader').getServerConfig();
+const config = require('../../common/configs-reader').getServerConfig();
 const mailer = require('../../mailer/email-verification');
 
 // Варианты пояснений к выдаваемым сервером HTTP-ответам

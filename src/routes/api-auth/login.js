@@ -1,7 +1,7 @@
 'use strict';
 
 const jwt = require('jsonwebtoken');
-const config = require('../../configs/configs-reader').getServerConfig();
+const config = require('../../common/configs-reader').getServerConfig();
 
 async function registerFormDataCheck(user) {
     return new Promise((resolve, reject) => {
