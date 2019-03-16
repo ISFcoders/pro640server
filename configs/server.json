@@ -49,7 +49,7 @@
       }
     },
     "contract": {
-      "address": "0x2aeb736b134dd6315beebd7dd6e2367970289097",
+      "address": "0x99e841d88d7d601d9111a63ad486eff8956c820d",
       "abi": "./configs/blockchain/abi/contractAbi06.json"
     },
     "output": {
