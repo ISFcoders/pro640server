@@ -1,5 +1,5 @@
 # kop640server
-Cooperative 6/40 backend side
+Cервер проекта 6/40 (backend side)
 
 ### Документация
 * [Конфигурационный файл](/docs/configs.md) &rarr; /docs/configs
@@ -9,7 +9,8 @@ Cooperative 6/40 backend side
  `$ npm install`  
  `$ node server`  
 
-### MEAN Stack
+### Используемый стек 
+
 - `MongoDB` &mdash; Storing data
 - `Express` &mdash; REST APIs
 - `Angular` &mdash; Frontend side
