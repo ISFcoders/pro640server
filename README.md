@@ -1,6 +1,10 @@
 # kop640server
 Cooperative 6/40 backend side
 
+### Documentation
+
+* [/docs/api](/docs/api.md)
+
 ### Start server
  `$ npm install`  
  `$ node server`  
