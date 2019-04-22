@@ -1,25 +1,25 @@
 # kop640server API doсumentation
 
+[Главная](../README.md) / Документация по API 
+
 ### /api/auth
-| name  | url | http | description | 
+| name  | http | url | description | 
 | --- | --- | --- | --- |
-| **register** | /api/auth/register | POST |
-| **login** | /api/auth/login | POST |
+| **register** | POST | /api/auth/register |
+| **login** | POST | /api/auth/login |
 
 ### /api/blockchain
-| name  | url | http | description | 
+| name  | http | url | description | 
 | --- | --- | --- | --- |
-| **/** | /api/blockchain/ | GET |
-| **get-offers-to-sell** | /api/blockchain/get-offers-to-sell | GET |
-| **get-offers-to-buy** | /api/blockchain/get-offers-to-buy | GET |
-| **info-contract** | /api/blockchain/info-contract | GET |
-| **info-offers-to-sell** | /api/blockchain/info-offers-to-sell | GET |
-| **info-offers-to-buy** | /api/blockchain/info-offers-to-buy | GET |
+| **/** | GET | /api/blockchain/ | Пустой (диагностический) запрос
+| **get-offers-to-sell** | GET | /api/blockchain/get-offers-to-sell | Актуальные предложения на продажу |
+| **get-offers-to-buy** | GET | /api/blockchain/get-offers-to-buy | Актуальные предлоджения на покупку |
+| **info-contract** | GET | /api/blockchain/info-contract | Инфо по всем транзакциям и предложениям |
+| **info-offers-to-sell** | GET | /api/blockchain/info-offers-to-sell | Инфо по предложениям (токенам) на продажу |
+| **info-offers-to-buy** | GET | /api/blockchain/info-offers-to-buy | Инфо по предложениям (токенам) на покупку |
 
 ### /api/ethereum-rates
-| name  | url | http | description | 
+| name  | http | url | description | 
 | --- | --- | --- | --- |
-| **/** | /api/ethereum-rates/ | GET |
-| **/eth-rub** | /api/ethereum-rates/eth-rub | GET |
-
-
+| **/** | GET | /api/ethereum-rates/ |
+| **/eth-rub** | GET | /api/ethereum-rates/eth-rub |
