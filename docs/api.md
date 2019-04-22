@@ -9,6 +9,7 @@
 ### /api/blockchain
 | name  | url | http | description | 
 | --- | --- | --- | --- |
+| **/** | /api/blockchain/ | GET |
 | **get-offers-to-sell** | /api/blockchain/get-offers-to-sell | GET |
 | **get-offers-to-buy** | /api/blockchain/get-offers-to-buy | GET |
 | **info-contract** | /api/blockchain/info-contract | GET |
@@ -18,6 +19,7 @@
 ### /api/ethereum-rates
 | name  | url | http | description | 
 | --- | --- | --- | --- |
-| **eth-rub** | /api/ethereum-rates/eth-rub | GET |
+| **/** | /api/ethereum-rates/ | GET |
+| **/eth-rub** | /api/ethereum-rates/eth-rub | GET |
 
 
