@@ -71,6 +71,12 @@
       "host": "smtp.yandex.ru",
       "user": "qlfund.mailer@yandex.ru",
       "password": "qlfund444QQ"
+    },
+    "noreply_yndx": {
+      "service": "yandex",
+      "host": "smtp.yandex.ru",
+      "user": "no-reply@pro640.ru",
+      "password": "krasam78"
     }
   }
 }
