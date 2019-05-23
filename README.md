@@ -1,4 +1,4 @@
-# kop640server
+# pro640server
 Cервер проекта 6/40 (backend side)
 
 ### Документация
@@ -8,6 +8,11 @@ Cервер проекта 6/40 (backend side)
 ### Запуск сервера
  `$ npm install`  
  `$ node server`  
+  
+Альтернатива:   
+`$ sudo npm install --unsafe-perm=true --allow-root`  
+`$ node server`
+  
 
 ### Используемый стек 
 
