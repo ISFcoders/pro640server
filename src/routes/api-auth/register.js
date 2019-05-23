@@ -8,11 +8,22 @@ const mailer = require('../../mailer/email-verification');
 
 const config = require('../../common/configs-reader');
 const configData = {
-    secret: config.get.string('token.secretkey', () => { throw new Error('Cannot define secret key'); }),
-    protocol: config.get.string('server.protocol', () => { throw new Error('Cannot define protocol'); }),
-    baseurl: config.get.string('server.baseurl', () => { throw new Error('Cannot define base url'); }),
-    port: config.get.string('server.port', () => { throw new Error('Cannot define port'); })
+    secret: getConfig('token.secretkey'),
+    protocol: getConfig('server.protocol'),
+    baseurl: getConfig('server.baseurl'),
+    port: getConfig('server.port'),
+    verification_by_proxy: getConfig('server.verification_by_proxy'),
+    proxy_protocol: getConfig('server.proxy.protocol'),
+    proxy_host: getConfig('server.proxy.host'),
+    proxy_port: getConfig('server.proxy.port')
 };
+
+// Функция-обертка для упрощения типовой обработки конфигурационных полей
+function getConfig(selector) {
+    return config.get.string(selector, () => {
+        throw new Error(`Cannot define ${ selector }`);
+    });
+}
 
 // Варианты пояснений к выдаваемым сервером HTTP-ответам
 const failMessages = require('../../common/http-response').getFailMessagesEmptyObj();
@@ -107,9 +118,37 @@ async function sendResponseFail(response, error) {
 
 // Отправка письма для прохождения верификации
 async function sendVerificationMail(token, username, email) {
+    let host = {
+        url: selectHostUrl(),
+        name: selectHostName()
+    };
     if (token) {
-        const url = `${ configData.protocol }://${ configData.baseurl }:${ configData.port }/verification/${ token }`;
-        mailer.sendVerificationMail(username, email, url);
+        const link = `${ host.url }/verification/${ token }`;
+        mailer.sendVerificationMail(username, email, link, host.url, host.name);
+    }
+
+    // Осуществялется выбор конфигурационных полей и формирование адресной строки хоста.
+    // Для внутреннего использования во время вызова функции создания и отправки письма для прохождения верификации.
+    function selectHostUrl() {
+        if (configData.verification_by_proxy === 'true') {
+            return getHostUrl(configData.proxy_protocol, configData.proxy_host, configData.proxy_port);
+        }
+        return getHostUrl(configData.protocol, configData.baseurl, configData.port);
+    }
+
+    // Осуществляется выбор конфигурационных полей и формирование сторки имени хоста.
+    // Для внутреннего использования во время вызова функции создания и отправки письма для прохождения верификации.
+    function selectHostName() {
+        if (configData.verification_by_proxy === 'true') {
+            return `${ configData.proxy_host }`;
+        }
+        return `${ configData.baseurl }`;
+    }
+
+    // Формирование адресной сторки хоста, в которй порт является опциональным значением.
+    // Для внутреннего использования во время вызова функции создания и отправки письма для прохождения верификации.
+    function getHostUrl(protocol, host, port) {
+        return `${ protocol }://${ host }` + (port !== 'default') ? `:${ port }` : ``;
     }
 }
 

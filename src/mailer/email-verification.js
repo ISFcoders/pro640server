@@ -2,7 +2,7 @@
 
 const mailer = require('./base');
 
-function sendVerificationMail(username, to, link) {
+function sendVerificationMail(username, to, link, hosturl, hostname) {
     const subject = 'Подтверждение регистрации учетной записи на сайте k6040.ru';
     const html = `Здравствуйте!` +
         `<br /><br />` +

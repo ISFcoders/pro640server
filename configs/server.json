@@ -7,6 +7,12 @@
       "short": "10000",
       "medium": "55000",
       "large": "125000"
+    },
+    "verification_by_proxy": "true",
+    "proxy": {
+      "protocol": "https",
+      "host": "pro640.ru",
+      "port": "default"
     }
   },
   "system" : {
