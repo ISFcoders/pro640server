@@ -4,7 +4,7 @@ const nodemailer = require('nodemailer');
 const smtpTransport = require('nodemailer-smtp-transport');
 
 const config = require('../common/configs-reader').getServerConfig();
-const configMailer = config['mailer']['qlfund_yndx'];
+const configMailer = config['mailer']['noreply_yndx'];
 
 const transporter = nodemailer.createTransport(smtpTransport({
     service: configMailer['service'],
