@@ -23,7 +23,8 @@ router.post('/register', (req, res) => {
         .then(user => lib.userNoExistsIntoDB(User, user))
         .then(checkedUser => lib.saveToDB(checkedUser))
         .then(registeredUser => lib.sendResponseOk(res, registeredUser))
-        .then(token => lib.sendVerificationMail(token, user.username, user.info.email))
+        .then(registeredUser => lib.saveVerificationCodeToDB(User, registeredUser))
+        .then(code => lib.sendVerificationMail(code, user))
         .catch(error => lib.sendResponseFail(res, error));
 });
 

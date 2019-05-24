@@ -1,5 +1,6 @@
 {
   "server": {
+    "name": "pro640.ru",
     "protocol": "http",
     "baseurl": "localhost",
     "port": "3000",
@@ -11,7 +12,7 @@
     "verification_by_proxy": "true",
     "proxy": {
       "protocol": "https",
-      "host": "pro640.ru",
+      "host": "api.pro640.ru",
       "port": "default"
     }
   },
