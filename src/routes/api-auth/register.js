@@ -9,6 +9,7 @@ const mailer = require('../../mailer/email-verification');
 const config = require('../../common/configs-reader');
 const configData = {
     secret: getConfig('token.secretkey'),
+    server_name: getConfig('server.name'),
     protocol: getConfig('server.protocol'),
     baseurl: getConfig('server.baseurl'),
     port: getConfig('server.port'),
@@ -31,7 +32,9 @@ failMessages.known = {
     incorrect_form_fields: 'Incorrect form fields',
     email_duplicate: 'Email duplicate',
     user_exists: 'User exists',
-    incorrect_db_response: 'Incorrect database response'
+    incorrect_db_response: 'Incorrect database response',
+    empty_verificaiton_code: 'Empty verification code'
+
 };
 failMessages.unknown = {
     internal_server_error: 'Internal server error'
@@ -92,17 +95,12 @@ async function saveToDB(user) {
 
 // Отправка HTTP-ответа (с кодом 200) об успехе запроса
 async function sendResponseOk(response, user) {
-    const random = require('../../common/random');
     return new Promise((resolve, reject) => {
         // token передается клиенту (в localStorage его браузера) и применяется в контроле сессий
         let payload = { subject: user._id };
         let token = jwt.sign(payload, configData.secret);
         response.status(200).send({ token });
-
-        // token2 отправляется на электронную почту владельца учетной записи в виде проверочного кода
-        let payload2 = { subject: user._id + random.getRandomInt() };
-        let token2 = jwt.sign(payload2, configData.secret);
-        resolve(token2);
+        resolve(user);
     });
 }
 
@@ -117,15 +115,17 @@ async function sendResponseFail(response, error) {
 }
 
 // Отправка письма для прохождения верификации
-async function sendVerificationMail(token, username, email) {
+async function sendVerificationMail(code, currentUser) {
+    let user = {
+        name: currentUser.username,
+        email: currentUser.info.email
+    };
     let host = {
         url: selectHostUrl(),
-        name: selectHostName()
+        name: configData.server_name
     };
-    if (token) {
-        const link = `${ host.url }/verification/${ token }`;
-        mailer.sendVerificationMail(username, email, link, host.url, host.name);
-    }
+    const link = `${ host.url }/verification/${ user.name }=${ code }`;
+    mailer.sendVerificationMail(user, link, host);
 
     // Осуществялется выбор конфигурационных полей и формирование адресной строки хоста.
     // Для внутреннего использования во время вызова функции создания и отправки письма для прохождения верификации.
@@ -136,20 +136,53 @@ async function sendVerificationMail(token, username, email) {
         return getHostUrl(configData.protocol, configData.baseurl, configData.port);
     }
 
-    // Осуществляется выбор конфигурационных полей и формирование сторки имени хоста.
-    // Для внутреннего использования во время вызова функции создания и отправки письма для прохождения верификации.
-    function selectHostName() {
-        if (configData.verification_by_proxy === 'true') {
-            return `${ configData.proxy_host }`;
-        }
-        return `${ configData.baseurl }`;
-    }
-
     // Формирование адресной сторки хоста, в которй порт является опциональным значением.
     // Для внутреннего использования во время вызова функции создания и отправки письма для прохождения верификации.
     function getHostUrl(protocol, host, port) {
-        return `${ protocol }://${ host }` + (port !== 'default') ? `:${ port }` : ``;
+        let result = protocol + '://' + host;
+        if (port !== 'default') {
+            result += ':' + port;
+        }
+        return result;
     }
+}
+
+// Создание проверочной сторки для последующего прохождения верификации
+function generateVerificationCode() {
+    return getRandomPhrase() + '-' + getRandomPhrase() + '-' + getRandomPhrase();
+
+    // Формируется строка из нескольких псевдослучайных чисел.
+    // Для внутреннего использования во время вызова функции создания верификациооной строки.
+    // Параметры:
+    //      count - количество используемых псевдослучайных чисел
+    function getRandomPhrase(count) {
+        const random = require('../../common/random');
+        if (count === undefined || typeof count !== 'number' || count <= 0) {
+            count = 3;
+        }
+        let phrase = '';
+        for (let i = 0; i < count; i++) {
+            phrase += `${ random.getRandomInt() }`;
+        }
+        return phrase;
+    }
+}
+
+async function saveVerificationCodeToDB(UserDB, user) {
+    let code = generateVerificationCode();
+    return new Promise((resolve, reject) => {
+        let query = { username: user.username };
+        let values = { verification: { email: { code: code }}};
+        UserDB.updateOne(query, values, (err, res) => {
+            if (err) {
+                reject(faileMessages.known.incorrect_db_response);
+            }
+            if (code) {
+                resolve(code);
+            }
+            reject(failMessages.known.empty_verificaiton_code);
+        });
+    });
 }
 
 module.exports.registerFormDataCheck = registerFormDataCheck;
@@ -159,3 +192,4 @@ module.exports.saveToDB = saveToDB;
 module.exports.sendResponseOk = sendResponseOk;
 module.exports.sendResponseFail = sendResponseFail;
 module.exports.sendVerificationMail = sendVerificationMail;
+module.exports.saveVerificationCodeToDB = saveVerificationCodeToDB;
