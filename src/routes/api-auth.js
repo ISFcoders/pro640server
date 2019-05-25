@@ -34,7 +34,7 @@ router.post('/login', (req, res) => {
     const lib = require('./api-auth/login');
     const user = new User(req.body);
     lib.registerFormDataCheck(user)
-        .catch(error => lib.sendResponseFail(res, error, 'Incorrect form fields'))
+        //.catch(error => lib.sendResponseFail(res, error, 'Incorrect form fields'))
         .then(user => lib.findUserIntoDB(User, user))
         .then(user => lib.sendResponseOk(res, user))
         .catch(error => lib.sendResponseFail(res, error, error));

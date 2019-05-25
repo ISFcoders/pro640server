@@ -19,13 +19,13 @@ async function findUserIntoDB(UserDB, reqUser) {
                 console.log(`find user into db err ${ error }`);
                 reject();
             }
-            if (!dbUser) {
-                reject('Invalid username or password');
+            if (dbUser) {
+                if (reqUser.password !== dbUser.password) {
+                    reject('Invalid username or password');
+                }
+                resolve(dbUser);
             }
-            if (reqUser.password !== dbUser.password) {
-                reject('Invalid username or password');
-            }
-            resolve(dbUser);
+            reject('');
         });
     });
 }
