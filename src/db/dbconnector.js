@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 
 //const readJsonFileSync = require('./configs-reader').readJsonFileSync;
 //const config = readJsonFileSync('configs/server.json');
-const config = require('../configs/configs-reader').getServerConfig();
+const config = require('../common/configs-reader').getServerConfig();
 
 function getDB(id) {
     return `mongodb://`

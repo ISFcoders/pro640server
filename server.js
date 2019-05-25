@@ -9,10 +9,10 @@ const app = express();
 // Server engine parts
 
 const server = require('./src/common/server-emitter').server;
-server.register(require('./src/blockchain/offers-to-sell').init(), {delay: 2000, interval: 'medium'});
-server.register(require('./src/blockchain/offers-to-buy').init(), {delay: 5000, interval: 'medium'});
-server.register(require('./src/ethereum/rates').init(), {delay: 3000, interval: 'large'});
-server.register(require('./src/blockchain/total-supply').init(), {delay: 500, interval: 'medium'});
+server.register(require('./src/blockchain/offers-to-sell').init(), {delay: 0, interval: 'short'});
+server.register(require('./src/blockchain/offers-to-buy').init(), {delay: 1500, interval: 'short'});
+server.register(require('./src/ethereum/rates').init(), {delay: 0, interval: 'large'});
+server.register(require('./src/blockchain/total-supply').init(), {delay: 0, interval: 'medium'});
 
 
 // Routing
@@ -38,7 +38,7 @@ app.get('/', (req, res) => {
 
 // Init port listener
 
-const config = require('./src/configs/configs-reader');
+const config = require('./src/common/configs-reader');
 const port = config.get.number('server.port', () => {
     throw new Error('FATAL ERROR: cannot define server port');
 });

@@ -1,7 +1,7 @@
 'use strict';
 
 const jwt = require('jsonwebtoken');
-const config = require('../configs/configs-reader').getServerConfig();
+const config = require('./configs-reader').getServerConfig();
 
 function verifyToken(req, res, next) {
     if (!req.headers.authorization) {

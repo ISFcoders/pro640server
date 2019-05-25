@@ -1,6 +1,12 @@
+# Конфигурационный файл
+[Главная](../README.md) / Конфигурационный файл  
+  
+**Внимание!** В конфигурационном файле `configs/server.json` содержится приватная информация.
+
+### Структура 
+```
 {
   "server": {
-    "name": "pro640.ru",
     "protocol": "http",
     "baseurl": "localhost",
     "port": "3000",
@@ -8,43 +14,23 @@
       "short": "10000",
       "medium": "55000",
       "large": "125000"
-    },
-    "verification_by_proxy": "true",
-    "proxy": {
-      "protocol": "https",
-      "host": "api.pro640.ru",
-      "port": "default"
     }
   },
   "system" : {
     "random" : {
-      "min": "1",
-      "max": "999"
+      "min": "MIN_VALUE",
+      "max": "MAX_VALUE"
     }
   },
   "mongo": {
-    "url": "ds129926.mlab.com",
-    "port": "29926",
-    "dbname": "users_p6040v1",
-    "username": "user6040",
-    "password": "psuser6040"
-  },
-  "mongo2": {
-    "url": "ds243931.mlab.com",
-    "port": "43931",
-    "dbname": "krasikov_p640",
-    "username": "krasikov",
-    "password": "krauff78"
-  },
-  "mongo3": {
-    "url": "ds247407.mlab.com",
-    "port": "47407",
-    "dbname": "k6040_accounts",
-    "username": "user6040",
-    "password": "psuser6040"
+    "url": "",
+    "port": "",
+    "dbname": "",
+    "username": "",
+    "password": ""
   },
   "token": {
-    "secretkey": "secretKey"
+    "secretkey": "SECRET_KEY"
   },
   "blockchain": {
     "provider": {
@@ -56,7 +42,7 @@
       }
     },
     "contract": {
-      "address": "0x9bf515c7694a6e0fecfed43a8440bfb176426c56",
+      "address": "0xb924E90E21c7cf9B2bc6279e81C280A8126DA881",
       "abi": "./configs/blockchain/abi/contractAbi06.json"
     },
     "output": {
@@ -76,14 +62,9 @@
     "qlfund_yndx": {
       "service": "yandex",
       "host": "smtp.yandex.ru",
-      "user": "qlfund.mailer@yandex.ru",
-      "password": "qlfund444QQ"
-    },
-    "noreply_yndx": {
-      "service": "yandex",
-      "host": "smtp.yandex.ru",
-      "user": "no-reply@pro640.ru",
-      "password": "krasam78"
+      "user": "example@yandex.ru",
+      "password": "password"
     }
   }
 }
+``` 

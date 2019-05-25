@@ -1,7 +1,7 @@
 'use strict';
 
 const jwt = require('jsonwebtoken');
-const config = require('../../configs/configs-reader').getServerConfig();
+const config = require('../../common/configs-reader').getServerConfig();
 
 async function registerFormDataCheck(user) {
     return new Promise((resolve, reject) => {
@@ -19,13 +19,13 @@ async function findUserIntoDB(UserDB, reqUser) {
                 console.log(`find user into db err ${ error }`);
                 reject();
             }
-            if (!dbUser) {
-                reject('Invalid username or password');
+            if (dbUser) {
+                if (reqUser.password !== dbUser.password) {
+                    reject('Invalid username or password');
+                }
+                resolve(dbUser);
             }
-            if (reqUser.password !== dbUser.password) {
-                reject('Invalid username or password');
-            }
-            resolve(dbUser);
+            reject('');
         });
     });
 }
