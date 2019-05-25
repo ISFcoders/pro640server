@@ -3,7 +3,7 @@
 const fs = require('fs');
 const Web3 = require('web3'); // web3: 1.0.0-beta.46
 
-const config = require('../configs/configs-reader').getServerConfig();
+const config = require('../common/configs-reader').getServerConfig();
 const configProvider = config['blockchain']['provider'];
 const configContract = config['blockchain']['contract'];
 

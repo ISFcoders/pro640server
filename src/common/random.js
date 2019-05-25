@@ -1,6 +1,6 @@
 'use strict';
 
-const config = require('../configs/configs-reader');
+const config = require('./configs-reader');
 const minValue = config.get.number('system.random.min', 1);
 const maxValue = config.get.number('system.random.max', 99);
 

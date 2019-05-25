@@ -2,7 +2,7 @@
 
 const mongoose = require('mongoose');
 
-const readJsonFileSync = require('../src/configs/configs-reader').readJsonFileSync;
+const readJsonFileSync = require('../src/common/configs-reader').readJsonFileSync;
 const config = readJsonFileSync('configs/server.json');
 
 const Schema = mongoose.Schema;
@@ -15,6 +15,15 @@ const userSchema = new Schema({
         phone: String,
         email: String,
         wallet: String
+    },
+    verification: {
+        email: {
+            state: Boolean,
+            code: String
+        },
+        kyc: {
+            state: Boolean
+        }
     },
     check: {
         email: Boolean,
@@ -46,6 +55,9 @@ function initUser(data) {
     user.info.name = 'Vasya Pupkin (new user)';
     user.info.phone = '-';
     user.info.wallet = '0x0000000000000000000000000000000000000000';
+    user.verification.email.state = false;
+    user.verification.email.code = '';
+    user.verification.kyc.state = false;
     user.check.email = false;
     user.check.kys = false;
     user.roles.user.enabled = false;
